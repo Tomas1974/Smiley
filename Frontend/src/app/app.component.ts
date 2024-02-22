@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import {UtilitiesService} from "./utilities.service";
-import {async} from "rxjs";
-import {BaseDto, ClientWantsToGetAllFarverDto, ServerSendsIOTDataToClientsDto} from "./BaseDto";
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {DataService} from "./Data.service";
+import {LegendPosition} from "@swimlane/ngx-charts";
+import {farveModel} from "./farveModel";
 
 @Component({
   selector: 'app-root',
@@ -23,38 +23,38 @@ import {BaseDto, ClientWantsToGetAllFarverDto, ServerSendsIOTDataToClientsDto} f
 
 <ion-grid>
   <ion-row>
-    <ion-col size="3">
-      <ion-title>Deltagere</ion-title>
+    <ion-col size="7">
       <ion-card >
 
-        <div *ngFor="let text of textAray | paginate:{itemsPerPage: tableSize,
-          currentPage: page,
-          totalItems: count}; let i=index">
+        <ngx-charts-bar-vertical
+          [view]=[1000,400]
+          [scheme]="colorScheme"
+          [results]="farve_c"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [legendPosition]="legendPosition"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          (select)="onSelect($event)">
+        </ngx-charts-bar-vertical>
 
-        <ion-card-content >
-
-          <ion-row style="border-bottom: 1px solid black; /* Add a solid black border at the bottom of each row */
-}">
-
-            <ion-col >
-          {{text}}
-            </ion-col>
-
-
-          </ion-row>
-
-        </ion-card-content>
-
-
-        </div>
-        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-        </pagination-controls>
 
       </ion-card>
     </ion-col>
     <ion-col size="6">
-
-
+    <ion-row>
+      <p>Antal Rød {{dataService.farve_count[0].value}}</p>
+    </ion-row>
+      <ion-row>
+        <p>Antal Gul {{dataService.farve_count[1].value}}</p>
+      </ion-row>
+      <ion-row>
+        <p>Antal Grøn {{dataService.farve_count[2].value}}</p>
+      </ion-row>
 
 
     </ion-col>
@@ -64,54 +64,53 @@ import {BaseDto, ClientWantsToGetAllFarverDto, ServerSendsIOTDataToClientsDto} f
   `,
 
 })
-export class AppComponent {
-
-  textAray: string[]=[];
-  page: number=1;
-  count: number=0;
-  tableSize:number=10
+export class AppComponent implements OnInit{
 
 
+  farve_c:farveModel[] = [];
 
-  ws: WebSocket = new WebSocket("ws://localhost:8181")
 
-  constructor(private utilitiesService: UtilitiesService) {
-    this.ws.onmessage = message => {
-      const messageFromServer = JSON.parse(message.data) as BaseDto<any>;
-      // @ts-ignore
-      this[messageFromServer.eventType].call(this, messageFromServer);
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Farve';
+  showYAxisLabel = true;
+  yAxisLabel = 'Antal';
+
+  colorScheme: any  = {
+    domain: ['#A10A28', '#C7B42C', '#5AA454','#AAAAAA']
+  };
+
+  legendPosition=LegendPosition.Below; //placerer landene under grafen
+
+  constructor(public dataService: DataService, private cdr: ChangeDetectorRef) {
+
     }
-  }
 
+  ngOnInit(): void {
 
-  onTableDataChange(event: any)
-  {
-    this.page=event;
-    this.textAray;
-  }
+    this.dataService.getList()
+      .subscribe(list =>
+        {
+          this.farve_c = list;
 
+          console.log("Liste længde "+this.farve_c.length);
 
+          this.farve_c=[...this.farve_c];
+          this.cdr.detectChanges();
 
-
-
-  TilføjFarve(dto: ClientWantsToGetAllFarverDto): void
-
-{
-  try
-  {
-    this.textAray=dto.farver!
-  }
-  catch (e)
-  {
-    console.log(e)
-  }
+        }
+  );
 }
 
-  ServerSendsIOTDataToClients(dto: ServerSendsIOTDataToClientsDto) {
-    if (dto.data != null) {
-      this.textAray.push(dto.data)
-    }
+
+  onSelect(event:any) {
+    console.log(event);
   }
+
 
 
 }
