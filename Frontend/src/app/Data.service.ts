@@ -12,7 +12,7 @@ export class DataService {
   farve_count:farveModel[] = [
     { name: "Red", value: 0 },
     { name: "Yellow", value: 0 },
-    { name: "Green", value: 3 }
+    { name: "Green", value: 0 }
   ];
 
 
@@ -88,5 +88,13 @@ export class DataService {
       console.log(e)
     }
   }
+
+    nulstil()
+    {
+      this.farve_count[0].value=0;
+      this.farve_count[1].value=0;
+      this.farve_count[2].value=0;
+      this.farve_count=[...this.farve_count];
+    }
 
 }
