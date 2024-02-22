@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BaseDto, ClientWantsToGetAllFarverDto, ServerSendsIOTDataToClientsDto} from "./BaseDto";
 import {farveModel} from "./farveModel";
-import {Observable, of} from "rxjs";
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,11 @@ export class DataService {
     { name: "Green", value: 0 }
   ];
 
+  farve_procent:farveModel[] = [
+    { name: "Red", value: 0 },
+    { name: "Yellow", value: 0 },
+    { name: "Green", value: 0 }
+  ];
 
 
   ws: WebSocket = new WebSocket("ws://localhost:8181")
@@ -28,7 +33,23 @@ export class DataService {
     }
   }
 
+  public RødProcent() : number
+  {
 
+    return this.farve_count[0].value/(this.farve_count[0].value+this.farve_count[1].value+this.farve_count[2].value)*100;
+  }
+
+  public GulProcent() : number
+  {
+
+    return this.farve_count[1].value/(this.farve_count[0].value+this.farve_count[1].value+this.farve_count[2].value)*100;
+  }
+
+  public GrønProcent() : number
+  {
+
+    return this.farve_count[2].value/(this.farve_count[0].value+this.farve_count[1].value+this.farve_count[2].value)*100;
+  }
 
 
   ServerSendsIOTDataToClients(dto: ServerSendsIOTDataToClientsDto) {
@@ -50,6 +71,13 @@ export class DataService {
       }
 
       this.farve_count=[...this.farve_count];
+
+      this.farve_procent = [
+        { name: "Red", value: this.RødProcent() },
+        { name: "Yellow", value: this.GulProcent()},
+        { name: "Green", value: this.GrønProcent() }
+      ];
+      this.farve_procent=[...this.farve_procent];
     }
 
   }
@@ -60,7 +88,6 @@ export class DataService {
     try
     {
 
-      console.log(dto.farver?.length);
       // @ts-ignore
       for (let i = 0; i < dto.farver?.length; i++) {
         {
@@ -78,9 +105,15 @@ export class DataService {
           }
         }
       }
-
-
       this.farve_count=[...this.farve_count];
+
+
+      this.farve_procent = [
+        { name: "Red", value: this.RødProcent() },
+        { name: "Yellow", value: this.GulProcent()},
+        { name: "Green", value: this.GrønProcent() }
+      ];
+      this.farve_procent=[...this.farve_procent];
 
     }
     catch (e)
@@ -95,6 +128,13 @@ export class DataService {
       this.farve_count[1].value=0;
       this.farve_count[2].value=0;
       this.farve_count=[...this.farve_count];
+      this.farve_procent = [
+
+        { name: "Red", value: 0 },
+        { name: "Yellow", value: 0},
+        { name: "Green", value: 0 }
+      ];
+      this.farve_procent=[...this.farve_procent];
     }
 
 }

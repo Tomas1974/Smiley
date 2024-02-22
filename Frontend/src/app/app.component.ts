@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DataService} from "./Data.service";
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {farveModel} from "./farveModel";
+import {chatbox} from "ionicons/icons";
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import {farveModel} from "./farveModel";
           <ion-col size="7">
 
             <ion-card >
+              <ion-card-title>Antal af forskellige farver</ion-card-title>
 
               <ngx-charts-bar-vertical
                 [view]=[1000,400]
@@ -45,8 +47,31 @@ import {farveModel} from "./farveModel";
 
 
             </ion-card>
+
+
+
           </ion-col>
+          <ion-card >
+
+            <ion-card-title>Procent fordeling</ion-card-title>
+          <ngx-charts-pie-chart
+            [view]=[1000,400]
+            [scheme]="colorScheme"
+            [results]="this.dataService.farve_procent"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [legendPosition]="legendPosition"
+            [labels]="showLabels"
+            [doughnut]="isDoughnut"
+            (select)="onSelect($event)"
+            (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)"
+          >
+          </ngx-charts-pie-chart>
+          </ion-card>
+
           <ion-col size="6">
+            <ion-card >
             <ion-row>
               <p>Antal Rød {{ dataService.farve_count[0].value }}</p>
             </ion-row>
@@ -57,7 +82,7 @@ import {farveModel} from "./farveModel";
               <p>Antal Grøn {{ dataService.farve_count[2].value }}</p>
             </ion-row>
             <ion-button (click)="nulstil()">Nulstil</ion-button>
-
+            </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -77,6 +102,9 @@ export class AppComponent {
   xAxisLabel = 'Farve';
   showYAxisLabel = true;
   yAxisLabel = 'Antal';
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+
 
   colorScheme: any  = {
     domain: ['#A10A28', '#C7B42C', '#5AA454','#AAAAAA']
@@ -94,7 +122,19 @@ export class AppComponent {
   }
 
 
+  onActivate(event:any): void {
+    console.log(event)
+  }
+
+  onDeactivate(event:any): void {
+    console.log(event)
+  }
+
+
+
   nulstil() {
     this.dataService.nulstil();
   }
+
+  protected readonly chatbox = chatbox;
 }

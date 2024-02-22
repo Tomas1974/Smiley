@@ -7,15 +7,15 @@ public class DataService
     
     public  void GemteFarver()
     {
-        FarveListe.Add("Rød");
-        FarveListe.Add("Gul");
-        FarveListe.Add("Grøn");
-        FarveListe.Add("Rød");
-        FarveListe.Add("Gul");
-        FarveListe.Add("Grøn");
-        FarveListe.Add("Rød");
-        FarveListe.Add("Gul");
-        FarveListe.Add("Grøn");
+        FarveListe.Add("RED");
+        FarveListe.Add("YELLOW");
+        FarveListe.Add("GREEN");
+        FarveListe.Add("RED");
+        FarveListe.Add("YELLOW");
+        FarveListe.Add("GREEN");
+        FarveListe.Add("RED");
+        FarveListe.Add("YELLOW");
+        FarveListe.Add("GREEN");
         
     }
 
