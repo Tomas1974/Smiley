@@ -54,6 +54,15 @@ export class DataService {
           this.farve_count[2].value=this.farve_count[2].value+1;
           break;
       }
+
+      const fc:farveModel[] = [
+        { name: "Red", value: this.farve_count[0].value },
+        { name: "Yellow", value: this.farve_count[1].value },
+        { name: "Green", value: this.farve_count[2].value }
+      ];
+
+      this.farveListe = of(fc);
+
     }
 
 
@@ -85,6 +94,16 @@ export class DataService {
         }
 
       }
+
+      const fc:farveModel[] = [
+        { name: "Red", value: this.farve_count[0].value },
+        { name: "Yellow", value: this.farve_count[1].value },
+        { name: "Green", value: this.farve_count[2].value }
+      ];
+
+      this.farveListe = of(fc);
+
+
     }
     catch (e)
     {

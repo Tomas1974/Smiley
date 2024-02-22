@@ -24,6 +24,7 @@ import {farveModel} from "./farveModel";
 <ion-grid>
   <ion-row>
     <ion-col size="7">
+
       <ion-card >
 
         <ngx-charts-bar-vertical
@@ -55,7 +56,7 @@ import {farveModel} from "./farveModel";
       <ion-row>
         <p>Antal Grøn {{dataService.farve_count[2].value}}</p>
       </ion-row>
-
+            <ion-button (click)="newList()">Updater graf </ion-button>
 
     </ion-col>
   </ion-row>
@@ -64,7 +65,7 @@ import {farveModel} from "./farveModel";
   `,
 
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
 
 
   farve_c:farveModel[] = [];
@@ -90,27 +91,21 @@ export class AppComponent implements OnInit{
 
     }
 
-  ngOnInit(): void {
-
-    this.dataService.getList()
-      .subscribe(list =>
-        {
-          this.farve_c = list;
-
-          console.log("Liste længde "+this.farve_c.length);
-
-          this.farve_c=[...this.farve_c];
-          this.cdr.detectChanges();
-
-        }
-  );
-}
-
 
   onSelect(event:any) {
     console.log(event);
   }
 
 
+  newList() {
 
+    this.dataService.getList()
+      .subscribe(list =>
+        {
+          this.farve_c = list;
+          this.farve_c=[...this.farve_c];
+
+        }
+      );
+  }
 }
