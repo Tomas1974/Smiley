@@ -15,7 +15,7 @@ export class DataService {
     { name: "Green", value: 3 }
   ];
 
-  farveListe = of(this.farve_count);
+
 
   ws: WebSocket = new WebSocket("ws://localhost:8181")
 
@@ -28,12 +28,6 @@ export class DataService {
     }
   }
 
-
-  getList(): Observable<farveModel[]> {
-    this.farveListe = of(this.farve_count);
-
-    return this.farveListe;
-  }
 
 
 
@@ -55,17 +49,8 @@ export class DataService {
           break;
       }
 
-      const fc:farveModel[] = [
-        { name: "Red", value: this.farve_count[0].value },
-        { name: "Yellow", value: this.farve_count[1].value },
-        { name: "Green", value: this.farve_count[2].value }
-      ];
-
-      this.farveListe = of(fc);
-
+      this.farve_count=[...this.farve_count];
     }
-
-
 
   }
 
@@ -92,17 +77,10 @@ export class DataService {
               break;
           }
         }
-
       }
 
-      const fc:farveModel[] = [
-        { name: "Red", value: this.farve_count[0].value },
-        { name: "Yellow", value: this.farve_count[1].value },
-        { name: "Green", value: this.farve_count[2].value }
-      ];
 
-      this.farveListe = of(fc);
-
+      this.farve_count=[...this.farve_count];
 
     }
     catch (e)
@@ -110,7 +88,5 @@ export class DataService {
       console.log(e)
     }
   }
-
-
 
 }
