@@ -68,9 +68,6 @@ import {farveModel} from "./farveModel";
 export class AppComponent {
 
 
-  farve_c:farveModel[] = [];
-
-
   // options
   showXAxis = true;
   showYAxis = true;
