@@ -56,7 +56,7 @@ import {farveModel} from "./farveModel";
             <ion-row>
               <p>Antal Grøn {{ dataService.farve_count[2].value }}</p>
             </ion-row>
-            <ion-button (click)="nulstil()">Nul stil</ion-button>
+            <ion-button (click)="nulstil()">Nulstil</ion-button>
 
           </ion-col>
         </ion-row>
